@@ -62,6 +62,10 @@ def signUp(request):
         name=request.POST.get('name')
         email=request.POST.get('email')
         passw=request.POST.get('pass')
+        gender=request.POST.get('gender')
+        phone=request.POST.get('phone')
+        college=request.POST.get('college')
+        city=request.POST.get('city')
         try:
             user=auth.create_user_with_email_and_password(email,passw)
         except:
@@ -69,7 +73,7 @@ def signUp(request):
             return render(request,"signUp.html",{"messg":message})
         
         uid = user['localId']
-        data={'name':name, 'gender':gender, 'accBal': DEFAULT_BAL, 'rank': 0 }
+        data={'name':name,'email':email,'gender':gender,'phone': phone, 'college':college,'city':city,'accBal': DEFAULT_BAL, 'rank': 0}
         database.child("users").child(uid).set(data)
         return redirect('signin')	
 
