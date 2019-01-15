@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Quarkopedia - Home </title>
+    {% if user.is_authenticated %}
+        <button type="button" onclick="location.href='{% url 'signout' %}'"> Sign out</button>
+    {% else %}
+        <button type="button" onclick="location.href='{% url 'qpHome' %}'"> You Mom gay</button>
+    {% endif %}
+</head>
+<body>
+	<h1> This is Home </h1> 
+	<br>
+	<button type="button" onclick="location.href='{% url 'signin' %}'"> Sign In</button>
+	<button type="button" onclick="location.href='{% url 'signup' %}'"> Sign Up</button>
+	<br>
+	<h1> {{ e }} </h1>
+</body>
+</html>
