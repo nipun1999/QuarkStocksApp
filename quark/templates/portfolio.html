@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Portfolio </title>
+</head>
+<body>
+    <ul>
+        {% for i in purchasedStocksList %}
+        <li> 
+            <b>{{ i.name }}</b>
+            <li>{{ i.purchasedPrice }}</li>
+            <li>{{ i.quantity }}</li>
+            <li>{{ i.industry }}</li>
+        </li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>

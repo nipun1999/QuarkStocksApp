@@ -51,10 +51,11 @@ def home(request):
 	return render(request, 'homepage.html', {"e":'sukdik'})
 
 def news(request):
+    newslist = []
     news = database.child("news").get()
     for i in news.each():
-        print(i.val())
-    return render(request, 'newspage.html') #{'newsList':news})
+        newslist.append(i.val())
+    return render(request, 'newspage.html', {'newsList': newslist })
 
 def signOut(request):
     del request.session['uid']
@@ -77,3 +78,12 @@ def signUp(request):
         return redirect('signin')	
 
     return render(request,"signUp.html")
+
+def portfolio(request):
+    stocksList = [] #list of dictionaries of each individual stock
+    stocks = database.child("users").child("uid1").child("purchasedStocks").get() #replace uid1 with actual user's uid
+    
+    for i in stocks.each():
+        stocksList.append(i.val())
+
+    return render(request, 'portfolio.html', { 'purchasedStocksList' : stocksList })

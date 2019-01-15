@@ -24,5 +24,6 @@ urlpatterns = [
     path('signin/page1/', views.page1, name='page1'),
     path('signout/', views.signOut, name='signout'),
     path('signup/', views.signUp, name='signup'),
+    path('portfolio/', views.portfolio, name='portfolio'),
     path('', views.home, name='qpHome'),
 ]
