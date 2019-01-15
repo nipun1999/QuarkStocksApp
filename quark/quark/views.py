@@ -37,9 +37,24 @@ def signIn(request):
 
     return render(request, 'signIn.html')
 
-def page1(request):
+def profile(request):
     if request.session['uid'] == str(session_id):
-        return render(request, 'page1.html')
+        idtoken= request.session['uid']
+        a = auth.get_account_info(idtoken)
+        a = a['users']
+        a = a[0]
+        a = a['localId']
+        e = database.child("users").child(a).child("email").get().val()
+        n = database.child("users").child(a).child("name").get().val()
+        g = database.child("users").child(a).child("gender").get().val()
+        p = database.child("users").child(a).child("phone").get().val()
+        c = database.child("users").child(a).child("college").get().val()
+        r = database.child("users").child(a).child("rank").get().val()
+        ac = database.child("users").child(a).child("accBal").get().val()
+        return render(request,'profile.html',{"e":e,"n":n,"g":g,"p":p,"c":c,"r":r,"ac":ac})
+        
+
+    return render (request, 'homepage.html')
 
     return render (request, 'homepage.html')
 
