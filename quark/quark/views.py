@@ -56,7 +56,7 @@ def profile(request):
 
     return render (request, 'homepage.html')
 
-    return render (request, 'homepage.html')
+    
 
 def home(request):
 	return render(request, 'homepage.html', {"e":'sukdik'})
