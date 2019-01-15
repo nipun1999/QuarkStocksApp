@@ -8,9 +8,10 @@
         {% for i in purchasedStocksList %}
         <li> 
             <b>{{ i.name }}</b>
-            <li>{{ i.purchasedPrice }}</li>
-            <li>{{ i.quantity }}</li>
-            <li>{{ i.industry }}</li>
+            <li>Purchased Price = {{ i.purchasedPrice }}</li>
+            <li>Quantity        = {{ i.quantity }}</li>
+            <li>Industry        = {{ i.industry }}</li>
+            <li>change          = {{ i.change}} </li>
         </li>
         {% endfor %}
     </ul>

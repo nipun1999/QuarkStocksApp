@@ -15,11 +15,7 @@ firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 database = firebase.database()
 
-news = [
-    {'title' : 'News number 1', 'desc' : 'News number 1 talks about things....', 'author' : 'R1'},
-    {'title' : 'News number 2', 'desc' : 'News number 2 talks about things....', 'author' : 'R2'},
-    {'title' : 'News number 3', 'desc' : 'News number 3 talks about things....', 'author' : 'R3'},
-]
+DEFAULT_BAL = 100
 
 def signIn(request):
     if request.method == 'POST':
@@ -73,8 +69,8 @@ def signUp(request):
             return render(request,"signUp.html",{"messg":message})
         
         uid = user['localId']
-        data={"name":name,"status":"1"}
-        database.child("users").child(uid).child("details").set(data)
+        data={'name':name, 'gender':gender, 'accBal': DEFAULT_BAL, 'rank': 0 }
+        database.child("users").child(uid).set(data)
         return redirect('signin')	
 
     return render(request,"signUp.html")
@@ -84,6 +80,13 @@ def portfolio(request):
     stocks = database.child("users").child("uid1").child("purchasedStocks").get() #replace uid1 with actual user's uid
     
     for i in stocks.each():
-        stocksList.append(i.val())
+        #temp is a dictionary
+        #stocksList is a list of dictionaries
+        price = database.child("stocks").child( str(i.key()) ).get().val()['currPrice'] 
+        temp = i.val()
+        pPrice = temp['purchasedPrice']
+        pPrice = (pPrice - price)/price
+        temp.update({ 'change':  pPrice })
+        stocksList.append(temp)
 
     return render(request, 'portfolio.html', { 'purchasedStocksList' : stocksList })
