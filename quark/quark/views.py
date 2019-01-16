@@ -55,8 +55,16 @@ def profile(request):
         
 
     return render (request, 'homepage.html')
-
-    
+def ranking(request):
+    ranklist = []
+    new_ranklist=[]
+    rank = database.child("users").get()
+    for i in rank.each():
+        balance=database.child("users").child(str(i.key())).get().val()['accBal']
+        name_user=database.child("users").child(str(i.key())).get().val()['name']
+        ranklist.append({'name_user':name_user,'accBal':accBal})
+        new_ranklist=OrderedDict(sorted(ranklist.items()))
+    return render(request, 'ranking.html', {'new_ranklist': new_ranklist })    
 
 def home(request):
 	return render(request, 'homepage.html', {"e":'sukdik'})
