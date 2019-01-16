@@ -37,11 +37,34 @@ def signIn(request):
 
     return render(request, 'signIn.html')
 
-def page1(request):
+def profile(request):
     if request.session['uid'] == str(session_id):
-        return render(request, 'page1.html')
+        idtoken= request.session['uid']
+        a = auth.get_account_info(idtoken)
+        a = a['users']
+        a = a[0]
+        a = a['localId']
+        e = database.child("users").child(a).child("email").get().val()
+        n = database.child("users").child(a).child("name").get().val()
+        g = database.child("users").child(a).child("gender").get().val()
+        p = database.child("users").child(a).child("phone").get().val()
+        c = database.child("users").child(a).child("college").get().val()
+        r = database.child("users").child(a).child("rank").get().val()
+        ac = database.child("users").child(a).child("accBal").get().val()
+        return render(request,'profile.html',{"e":e,"n":n,"g":g,"p":p,"c":c,"r":r,"ac":ac})
+        
 
     return render (request, 'homepage.html')
+def ranking(request):
+    ranklist = []
+    new_ranklist=[]
+    rank = database.child("users").get()
+    for i in rank.each():
+        balance=database.child("users").child(str(i.key())).get().val()['accBal']
+        name_user=database.child("users").child(str(i.key())).get().val()['name']
+        ranklist.append({'name_user':name_user,'accBal':accBal})
+        new_ranklist=OrderedDict(sorted(ranklist.items()))
+    return render(request, 'ranking.html', {'new_ranklist': new_ranklist })    
 
 def home(request):
 	return render(request, 'homepage.html', {"e":'sukdik'})
@@ -62,6 +85,10 @@ def signUp(request):
         name=request.POST.get('name')
         email=request.POST.get('email')
         passw=request.POST.get('pass')
+        gender=request.POST.get('gender')
+        phone=request.POST.get('phone')
+        college=request.POST.get('college')
+        city=request.POST.get('city')
         try:
             user=auth.create_user_with_email_and_password(email,passw)
         except:
@@ -69,7 +96,7 @@ def signUp(request):
             return render(request,"signUp.html",{"messg":message})
         
         uid = user['localId']
-        data={'name':name, 'gender':gender, 'accBal': DEFAULT_BAL, 'rank': 0 }
+        data={'name':name,'email':email,'gender':gender,'phone': phone, 'college':college,'city':city,'accBal': DEFAULT_BAL, 'rank': 0}
         database.child("users").child(uid).set(data)
         return redirect('signin')	
 
