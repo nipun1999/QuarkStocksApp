@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 import pyrebase
+import time
 from django.contrib import auth as dj_auth
 
 config = {
@@ -117,3 +118,16 @@ def portfolio(request):
         stocksList.append(temp)
 
     return render(request, 'portfolio.html', { 'purchasedStocksList' : stocksList })
+
+def buystock(request):
+    if request.method == 'POST':
+        time.sleep(10)
+        data = { 
+            'price' : request.POST.get('buyprice'),
+            'qty' : request.POST.get('quantity')
+        }
+        database.child("testing").set(data)
+        return render(request, 'buystock.html')
+
+    return render(request, 'buystock.html')
+

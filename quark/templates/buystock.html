@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Buy Stocks</title>
+</head>
+<body>
+    <form action="{% url 'buystock' %}" method="POST">
+    {% csrf_token %}
+        <h3>Price buying at : <input type="number" name="buyprice"> </h3>
+        <h3>Quantity : <input type="number" name="quantity"> </h3>
+        <input type="submit" name="placeorder">
+    </form>
+</body>
+</html>
